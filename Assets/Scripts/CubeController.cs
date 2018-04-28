@@ -164,7 +164,7 @@ public class CubeController : MonoBehaviour
 
     void Randomize()
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 1; i++)
         {
             Transform selectedAxis = _axis[Random.Range(0, 4)];
             Utils.Rotation rotation = (Utils.Rotation)Random.Range(0, 4);

@@ -5,4 +5,7 @@
 
     public const string TIMER = "TIME:";
 
+    public const string WIN = "YOU WIN";
+    public const string NEW_HIGSCORE = "New HighScore";
+
 }

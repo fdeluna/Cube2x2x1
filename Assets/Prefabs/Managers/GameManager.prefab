@@ -53,6 +53,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NotificationTitle: {fileID: 0}
   NotificationContent: {fileID: 0}
-  ScoresPanel: {fileID: 0}
+  ScoresTitle: {fileID: 0}
+  HighScore: {fileID: 0}
   rotateSFX: {fileID: 0}
   BackgroundMusic: {fileID: 0}
+  State: 0
