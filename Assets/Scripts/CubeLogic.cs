@@ -17,8 +17,6 @@ public class CubeLogic
     Color[] leftIn = new Color[2];
     Color[] rightIn = new Color[2];
 
-    int count = 0;
-
     public CubeLogic()
     {
         InitCubeLogic();
@@ -57,7 +55,6 @@ public class CubeLogic
         solve &= rightOut.CheckAllEquals();
         solve &= face.CheckAllEquals();
         solve &= back.CheckAllEquals();
-        Debug.Log(solve);
         return solve;
     }
 
@@ -94,7 +91,6 @@ public class CubeLogic
         Debug.Log("RIGHT IN");
         rightIn.DebugToString();
         Debug.Log("===========================================");
-        Debug.Log(count);
     }
 
     public void CheckRotation(string axisString, bool rotation = false, bool leftSwipe = false)
@@ -104,7 +100,7 @@ public class CubeLogic
         switch (axis)
         {
             case Utils.Axis.LeftAxis:
-                count++;
+
                 if (rotation)
                 {
                     if (leftSwipe)
@@ -162,7 +158,6 @@ public class CubeLogic
                 break;
 
             case Utils.Axis.RightAxis:
-                count++;
                 if (rotation)
                 {
                     if (leftSwipe)
@@ -220,7 +215,6 @@ public class CubeLogic
                 }
                 break;
             case Utils.Axis.TopAxis:
-                count++;
                 if (rotation)
                 {
                     if (leftSwipe)
@@ -277,7 +271,6 @@ public class CubeLogic
                 break;
 
             case Utils.Axis.BottomAxis:
-                count++;
                 if (rotation)
                 {
                     if (leftSwipe)

@@ -17,7 +17,9 @@ public class CubeController : MonoBehaviour
     private Transform _selectedAxis;
     private Vector2 _swipeStartPosition = Vector2.zero;
     private bool _rotationLocked = false;
-    private bool _solve = false;
+
+    public delegate void CubeSolveDelegate();
+    public event CubeSolveDelegate OnCubeSolve;
 
     Transform SelectedAxis
     {
@@ -32,7 +34,7 @@ public class CubeController : MonoBehaviour
                 _selectedAxis = value;
                 _selectedAxis.MaterialColorFade(1);
             }
-            else if (_selectedAxis != value)
+            else if (value != null && _selectedAxis != value)
             {
                 _selectedAxis.MaterialColorFade(0);
                 _selectedAxis = value;
@@ -57,66 +59,69 @@ public class CubeController : MonoBehaviour
 
     void Update()
     {
-        if (Input.touchCount > 0 && !_solve)
+        if (GameManager.Instance.State == GameManager.GameState.PLAYING)
         {
-            switch (Input.GetTouch(0).phase)
+            if (Input.touchCount > 0)
             {
-                case TouchPhase.Ended:
+                switch (Input.GetTouch(0).phase)
+                {
+                    case TouchPhase.Ended:
 
-                    Vector2 currentSwipe = Input.GetTouch(0).position - _swipeStartPosition;
-                    currentSwipe.Normalize();
+                        Vector2 currentSwipe = Input.GetTouch(0).position - _swipeStartPosition;
+                        currentSwipe.Normalize();
 
-                    if (!_rotationLocked && SelectedAxis != null)
-                    {
-                        // UP SWIPE
-                        if (currentSwipe.y > 0 && (currentSwipe.x > -0.5f && currentSwipe.x < 0.5f))
+                        if (!_rotationLocked && SelectedAxis != null)
                         {
-                            if (SelectedAxis.name == "TopAxis" || SelectedAxis.name == "BottomAxis")
-                                StartCoroutine(RotateAxisCO(SelectedAxis, Vector3.forward * -180));
-                            else
-                                StartCoroutine(RotateAxisCO(SelectedAxis, Vector3.right * -180));
+                            // UP SWIPE
+                            if (currentSwipe.y > 0 && (currentSwipe.x > -0.5f && currentSwipe.x < 0.5f))
+                            {
+                                if (SelectedAxis.name == "TopAxis" || SelectedAxis.name == "BottomAxis")
+                                    StartCoroutine(RotateAxisCO(SelectedAxis, Vector3.forward * -180));
+                                else
+                                    StartCoroutine(RotateAxisCO(SelectedAxis, Vector3.right * -180));
 
-                            _cubeLogic.CheckRotation(SelectedAxis.name);
+                                _cubeLogic.CheckRotation(SelectedAxis.name);
+
+                            }
+                            // DOWN SWIPE
+                            else if (currentSwipe.y < 0 && (currentSwipe.x > -0.5f && currentSwipe.x < 0.5f))
+                            {
+                                if (SelectedAxis.name == "TopAxis" || SelectedAxis.name == "BottomAxis")
+                                    StartCoroutine(RotateAxisCO(SelectedAxis, Vector3.forward * 180));
+                                else
+                                    StartCoroutine(RotateAxisCO(SelectedAxis, Vector3.right * 180));
+
+                                _cubeLogic.CheckRotation(SelectedAxis.name);
+                            }
+                            // LEFT SWIPE
+                            else if (currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
+                            {
+                                StartCoroutine(RotateAxisCO(SelectedAxis, Vector3.up * 90));
+                                _cubeLogic.CheckRotation(SelectedAxis.name, true, true);
+                            }
+                            // RIGHT SWIPE
+                            else if (currentSwipe.x > 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
+                            {
+                                StartCoroutine(RotateAxisCO(SelectedAxis, Vector3.up * -90));
+                                _cubeLogic.CheckRotation(SelectedAxis.name, true);
+                            }
+                        }
+                        break;
+
+                    case TouchPhase.Moved:
+                        if (SelectedAxis == null && !_rotationLocked)
+                        {
+                            transform.Rotate(Input.GetTouch(0).deltaPosition.y * 0.3f, Input.GetTouch(0).deltaPosition.x * 0.3f, 0, Space.World);
 
                         }
-                        // DOWN SWIPE
-                        else if (currentSwipe.y < 0 && (currentSwipe.x > -0.5f && currentSwipe.x < 0.5f))
-                        {
-                            if (SelectedAxis.name == "TopAxis" || SelectedAxis.name == "BottomAxis")
-                                StartCoroutine(RotateAxisCO(SelectedAxis, Vector3.forward * 180));
-                            else
-                                StartCoroutine(RotateAxisCO(SelectedAxis, Vector3.right * 180));
+                        break;
 
-                            _cubeLogic.CheckRotation(SelectedAxis.name);
-                        }
-                        // LEFT SWIPE
-                        else if (currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
-                        {
-                            StartCoroutine(RotateAxisCO(SelectedAxis, Vector3.up * 90));
-                            _cubeLogic.CheckRotation(SelectedAxis.name, true, true);
-                        }
-                        // RIGHT SWIPE
-                        else if (currentSwipe.x > 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
-                        {
-                            StartCoroutine(RotateAxisCO(SelectedAxis, Vector3.up * -90));
-                            _cubeLogic.CheckRotation(SelectedAxis.name, true);
-                        }
-                    }
-                    break;
-
-                case TouchPhase.Moved:
-                    if (SelectedAxis == null && !_rotationLocked)
-                    {
-                        transform.Rotate(Input.GetTouch(0).deltaPosition.y * 0.3f, Input.GetTouch(0).deltaPosition.x * 0.3f, 0, Space.World);
-
-                    }
-                    break;
-
-                case TouchPhase.Began:
-                    _swipeStartPosition = Input.GetTouch(0).position;
-                    if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.GetTouch(0).position), out _hit, Mathf.Infinity))
-                        SelectedAxis = _hit.transform;
-                    break;
+                    case TouchPhase.Began:
+                        _swipeStartPosition = Input.GetTouch(0).position;
+                        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.GetTouch(0).position), out _hit, Mathf.Infinity))
+                            SelectedAxis = _hit.transform;
+                        break;
+                }
             }
         }
     }
@@ -140,7 +145,11 @@ public class CubeController : MonoBehaviour
         _cubes.ForEach(x => x.parent = _dados);
         selectedAxis.rotation = currentRotation;
         _rotationLocked = false;
-        _solve = _cubeLogic.CheckSolve();
+        if (_cubeLogic.CheckSolve())
+        {
+            SelectedAxis = null;
+            OnCubeSolve.Invoke();
+        }
     }
 
     void RotateAxis(Transform selectedAxis, Vector3 angle)
@@ -155,7 +164,7 @@ public class CubeController : MonoBehaviour
 
     void Randomize()
     {
-        for (int i = 0; i < 1000; i++)
+        for (int i = 0; i < 5; i++)
         {
             Transform selectedAxis = _axis[Random.Range(0, 4)];
             Utils.Rotation rotation = (Utils.Rotation)Random.Range(0, 4);
@@ -194,6 +203,6 @@ public class CubeController : MonoBehaviour
                     break;
             }
         }
-        _cubeLogic.CubeLogicDebug();        
+        _cubeLogic.CubeLogicDebug();
     }
 }
