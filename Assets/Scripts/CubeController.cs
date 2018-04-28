@@ -10,7 +10,7 @@ public class CubeController : MonoBehaviour
     public float minSwipeDistX = 5;
 
     [Header("Loigc")]
-    int randomizeMoves = 5;
+    public int randomizeMoves = 5;
 
     private AudioSource _rotateSFX;
     private CubeLogic _cubeLogic;
