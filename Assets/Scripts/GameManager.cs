@@ -92,11 +92,6 @@ public class GameManager : Singleton<GameManager>
         while (State == GameState.PLAYING)
         {
             _gameTime += Time.fixedDeltaTime;
-
-            int seconds = (int)(_gameTime % 60);
-            int minutes = (int)(_gameTime / 60) % 60;
-            int hours = (int)(_gameTime / 3600) & 24;
-
             NotificationContent.text = GetTimeHHMMSS(_gameTime);
             yield return null;
         }

@@ -9,6 +9,9 @@ public class CubeController : MonoBehaviour
     public float minSwipeDistY = 5;
     public float minSwipeDistX = 5;
 
+    [Header("Loigc")]
+    int randomizeMoves = 5;
+
     private AudioSource _rotateSFX;
     private CubeLogic _cubeLogic;
     private Transform _dados;
@@ -169,7 +172,7 @@ public class CubeController : MonoBehaviour
 
     void Randomize()
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < randomizeMoves; i++)
         {
             Transform selectedAxis = _axis[Random.Range(0, 4)];
             Utils.Rotation rotation = (Utils.Rotation)Random.Range(0, 4);
