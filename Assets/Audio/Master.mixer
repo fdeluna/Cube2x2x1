@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!241 &24100000
+AudioMixerController:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Master
+  m_OutputGroup: {fileID: 0}
+  m_MasterGroup: {fileID: 24300002}
+  m_Snapshots:
+  - {fileID: 245979319040487292}
+  - {fileID: 245508472747514696}
+  m_StartSnapshot: {fileID: 245979319040487292}
+  m_SuspendThreshold: -80
+  m_EnableSuspend: 1
+  m_UpdateMode: 0
+  m_ExposedParameters: []
+  m_AudioMixerGroupViews:
+  - guids:
+    - 2b2aab975319ee14dbd317375a128d9a
+    name: View
+  m_CurrentViewIndex: 0
+  m_TargetSnapshot: {fileID: 245979319040487292}
+--- !u!243 &24300002
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Master
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 2b2aab975319ee14dbd317375a128d9a
+  m_Children: []
+  m_Volume: 1a666e09aeb4d1546aa516a3398e9616
+  m_Pitch: 1a7778f1b2b48b74f91888e8c55d0a98
+  m_Effects:
+  - {fileID: 24400004}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!244 &24400004
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_EffectID: 9b68df8024e074548a242b4884bef4f2
+  m_EffectName: Attenuation
+  m_MixLevel: 5faf1d0ced7e6f747817230e1a77f04c
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!245 &245508472747514696
+AudioMixerSnapshotController:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Mute
+  m_AudioMixer: {fileID: 24100000}
+  m_SnapshotID: 2bad3658e3274ec45bdc41ecce60ba84
+  m_FloatValues:
+    1a666e09aeb4d1546aa516a3398e9616: -80
+  m_TransitionOverrides: {}
+--- !u!245 &245979319040487292
+AudioMixerSnapshotController:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: UnMute
+  m_AudioMixer: {fileID: 24100000}
+  m_SnapshotID: 10ddcbd51ebcd6c49abd642727fc64a8
+  m_FloatValues:
+    1a666e09aeb4d1546aa516a3398e9616: -0.10231405
+  m_TransitionOverrides: {}

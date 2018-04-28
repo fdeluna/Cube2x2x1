@@ -4,10 +4,12 @@ using System.Collections.Generic;
 
 public class CubeController : MonoBehaviour
 {
+    [Header("Movement")]
     public float RotationTime = 0.5f;
     public float minSwipeDistY = 5;
     public float minSwipeDistX = 5;
 
+    private AudioSource _rotateSFX;
     private CubeLogic _cubeLogic;
     private Transform _dados;
     private List<Transform> _axis = new List<Transform>();
@@ -50,6 +52,7 @@ public class CubeController : MonoBehaviour
 
     void Start()
     {
+        _rotateSFX = transform.Find("SFX").GetComponent(typeof(AudioSource)) as AudioSource;
         _dados = transform.Find("Dados");
         _axis = transform.Find("Axis").GetTransformChilders();
         _cubes = _dados.GetTransformChilders();
@@ -129,10 +132,12 @@ public class CubeController : MonoBehaviour
     IEnumerator RotateAxisCO(Transform selectedAxis, Vector3 angle)
     {
         _rotationLocked = true;
+        _rotateSFX.Play();
 
         Quaternion currentRotation = selectedAxis.rotation;
         Bounds axisBound = (selectedAxis.GetComponent(typeof(Collider)) as Collider).bounds;
         _cubes.ForEach(x => x.parent = axisBound.Contains(x.position) ? selectedAxis : _dados);
+
         var rotation = selectedAxis.rotation * Quaternion.Euler(angle);
         float t = 0;
         while (t < RotationTime)
